@@ -1,0 +1,997 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "School Management System",
+        "version": "1.0.0",
+        "description": "A small system to manage your basic school needs"
+    },
+    "schemes": ["https"],
+    "host": "schoolmanagement-challenge.onrender.com",
+    "paths": {
+        "/api/user/createUser": {
+            "post": {
+                "tags": [
+                    "/auth"
+                ],
+                "summary": "Creates an account for testing",
+                "description": "Returns the account's details",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for creating an account",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/AccountResponse"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }  
+        },
+        "/api/user/getToken": {
+            "get": {
+                "tags": [
+                    "/auth"
+                ],
+                "summary": "Return token",
+                "description": "Return jwt token",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "authorization",
+                        "type": "string",
+                        "description": "Basic Auth with the Username: id from /createUser and your chosen password"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/GetToken"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }  
+        },
+        "/api/school/getSchools": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find schools",
+                "description": "Returns schools",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "limit",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "description": "schools",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/responses/SchoolsResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/school/getSchool": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find school",
+                "description": "Returns school",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "School's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SchoolsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/school/createSchool": {
+            "post": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Posts school",
+                "description": "Returns the posted school",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for creating a school",
+                        "schema": {
+                            "$ref": "#/definitions/SchoolBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/SchoolsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            } 
+        },
+        "/api/school/updateSchool": {
+            "patch": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Updates school",
+                "description": "Returns the updated school",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for updating a school",
+                        "schema": {
+                            "$ref": "#/definitions/SchoolBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SchoolsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/school/deleteSchool": {
+            "delete": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Delete school",
+                "description": "Returns deleted school",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "School's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SchoolsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/classroom/getClassrooms": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find classrooms",
+                "description": "Returns classrooms",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "limit",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "description": "schools",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/responses/ClassRoomsResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/classroom/getClassroom": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find classroom",
+                "description": "Returns classroom",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ClassroomId's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ClassRoomsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/classroom/createClassroom": {
+            "post": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Posts classroom",
+                "description": "Returns the posted classroom",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for creating a classroom",
+                        "schema": {
+                            "$ref": "#/definitions/ClassroomBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/ClassRoomsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/classroom/updateClassroom": {
+            "patch": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Updates classroom",
+                "description": "Returns the updated classroom",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for updating a classroom",
+                        "schema": {
+                            "$ref": "#/definitions/ClassroomBody"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ClassroomId's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ClassRoomsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            } 
+        },
+        "/api/classroom/deleteClassroom": {
+            "delete": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Delete classroom",
+                "description": "Returns deleted classroom",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ClassroomId's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ClassRoomsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/student/getStudents": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find students",
+                "description": "Returns students",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "limit",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "description": "students",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/responses/StudentsResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }        
+        },
+        "/api/student/getStudent": {
+            "get": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Find student",
+                "description": "Returns student",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "student's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/StudentsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/student/createStudent": {
+            "post": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Posts student",
+                "description": "Returns the posted student",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for creating a student",
+                        "schema": {
+                            "$ref": "#/definitions/StudentBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/StudentsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }  
+        },
+        "/api/student/updateStudent": {
+            "patch": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Updates student",
+                "description": "Returns the updated student",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {   
+                        "in": "body",
+                        "name": "requestBody",
+                        "description": "Schema for updating a student",
+                        "schema": {
+                            "$ref": "#/definitions/StudentBody"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "student's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/StudentsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/student/deleteStudent": {
+            "delete": {
+                "tags": [
+                    "/schoolManagement"
+                ],
+                "summary": "Delete student",
+                "description": "Returns deleted student",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Student's Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/StudentsResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalError"
+                    }
+                }
+            }
+        },
+        "/api/status/getStatus": {
+            "get": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Service Status",
+                "description": "Returns the service status",
+                "operationId": "status",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Schools": {
+            "type": "object",
+            "description": "School",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "123456",
+                    "description": "School's id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Al Manhal School",
+                    "description": "School's name"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "School's creation date",
+                    "example": "2024-10-24T00:00:00"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "School's update date",
+                    "example": "2021-10-24T00:00:00"
+                }
+            }
+        },
+        "SchoolBody": {
+            "type": "object",
+            "description": "School",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "1234",
+                    "description": "School's Id (only needed for patch)"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Al Manhal School",
+                    "description": "School's name"
+                }
+            }
+        },
+        "Classrooms": {
+            "type": "object",
+            "description": "Classrooms",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "123456",
+                    "description": "Classrooms's id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "1-4",
+                    "description": "Classrooms's name"
+                },
+                "schoolId": {
+                    "type": "string",
+                    "example": "23",
+                    "description": "School's Id"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Classrooms's creation date",
+                    "example": "2024-10-24T00:00:00"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Classrooms's update date",
+                    "example": "2021-10-24T00:00:00"
+                }
+            }
+        },
+        "ClassroomBody": {
+            "type": "object",
+            "description": "Classrooms",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "1234",
+                    "description": "Classroom's Id (only needed for patch)"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "1-4",
+                    "description": "Classrooms's name"
+                },
+                "schoolId": {
+                    "type": "string",
+                    "example": "23",
+                    "description": "School's Id"
+                }
+            }
+        },
+        "Students": {
+            "type": "object",
+            "description": "Classrooms",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "123456",
+                    "description": "Students's id"
+                },
+                "name": {
+                    "description": "Students's name",
+                    "type": "string",
+                    "example": "Ahmed Saber"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "ahmadsaber@gmail.com",
+                    "description": "Students's email"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "example": "0110110111",
+                    "description": "Students's phone number"
+                },
+                "classroomId": {
+                    "type": "string",
+                    "example": "23",
+                    "description": "classroom's Id"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Classrooms's creation date",
+                    "example": "2024-10-24T00:00:00"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Classrooms's update date",
+                    "example": "2021-10-24T00:00:00"
+                }
+            }
+        },
+        "StudentBody": {
+            "type": "object",
+            "description": "Classrooms",
+            "required": [
+                "name",
+                "email",
+                "phoneNumber",
+                "classroomId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "1234",
+                    "description": "Students's Id (only needed for patch)"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Ahmed Saber",
+                    "description": "Students's name"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "ahmadsaber@gmail.com",
+                    "description": "Students's email"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "example": "0110110111",
+                    "description": "Students's phone number"
+                },
+                "classroomId": {
+                    "type": "string",
+                    "example": "23",
+                    "description": "classroom's Id"
+                }
+            }
+        },
+        "Account": {
+            "type": "object",
+            "description": "Account",
+            "required": [
+                "userName",
+                "password",
+                "role"
+            ],
+            "properties": {
+                "userName": {
+                    "type": "string",
+                    "example": "Ahmed Saber",
+                    "description": "Account's name"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "987654321",
+                    "description": "Account's password"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "admin",
+                    "description": "Account's role",
+                    "enum": ["admin", "superAdmin"]
+                }
+            }
+        },
+        "AccountResponse": {
+            "type": "object",
+            "description": "Account",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "123456",
+                    "description": "Account's id"
+                },
+                "userName": {
+                    "type": "string",
+                    "example": "Ahmed Saber",
+                    "description": "Account's name"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "Ahmed_Saber@hotmail.com",
+                    "description": "Account's email"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "admin",
+                    "description": "Account's role",
+                    "enum": ["admin", "superAdmin"]
+                },
+                "schoolId": {
+                    "type": "string",
+                    "example": "12345",
+                    "description": "User's school Id if admin"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Account's creation date",
+                    "example": "2024-10-24T00:00:00"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Account's update date",
+                    "example": "2024-10-24T00:00:00"
+                },
+                "longToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNzY3MjcyNzgxMTYyMTI4IiwidXNlck5hbWUiOiJBaG1lZCBTYWJlciBhZG1pbiIsInBhc3N3b3JkIjoiJDJiJDEwJGFqelB2Llp2VnFxZkxNN0suM0wvbmVJUW85ZzR0Lllubmw0cVFnUjJLa0RMRUJ5U0FpU3o2IiwiZW1haWwiOm51bGwsInJvbGUiOiJzdXBlckFkbWluIiwic2Nob29sSWQiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDctMDdUMjE6MTI6NTguNjUxWiIsInVwZGF0ZWRBdCI6IjIwMjQt",
+                    "description": "jwt token"
+                },
+                "tokenExpiresIn": {
+                    "type": "string",
+                    "example": "1 hour",
+                    "description": "jwt token's expiration duration"
+                }
+            }
+        },
+        "GetToken": {
+            "type": "object",
+            "description": "Token",
+            "properties": {
+                "longToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNzY3MjcyNzgxMTYyMTI4IiwidXNlck5hbWUiOiJBaG1lZCBTYWJlciBhZG1pbiIsInBhc3N3b3JkIjoiJDJiJDEwJGFqelB2Llp2VnFxZkxNN0suM0wvbmVJUW85ZzR0Lllubmw0cVFnUjJLa0RMRUJ5U0FpU3o2IiwiZW1haWwiOm51bGwsInJvbGUiOiJzdXBlckFkbWluIiwic2Nob29sSWQiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDctMDdUMjE6MTI6NTguNjUxWiIsInVwZGF0ZWRBdCI6IjIwMjQt",
+                    "description": "jwt token"
+                },
+                "tokenExpiresIn": {
+                    "type": "string",
+                    "example": "1 hour",
+                    "description": "jwt token's expiration duration"
+                }
+            }
+        },
+        "Status": {
+            "type": "object",
+            "description": "API Status",
+            "properties": {
+                "name": {
+                    "description": "Service name",
+                    "type": "string",
+                    "example": "schoolmanagment"
+                },
+                "status": {
+                    "description": "API status",
+                    "type": "string",
+                    "example": "ok",
+                    "enum": [
+                        "ok"
+                    ]
+                },
+                "version": {
+                    "description": "API version",
+                    "type": "string",
+                    "example": "1.0.0"
+                }          
+            }
+        },
+        "Error": {
+            "type": "object",
+            "description": "Error",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "404",
+                    "description": "Error's Code"
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Unauthorized",
+                    "description": "short error description"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "unauthorized access to schools",
+                    "description": "Error message description"
+                }
+            }
+        }
+    },
+    "responses": {
+        "AccountResponse":{
+            "description": "The Account Response",
+            "schema": {
+                "$ref": "#/definitions/AccountResponse"
+            }
+        },
+        "GetToken":{
+            "description": "The Token's Response",
+            "schema": {
+                "$ref": "#/definitions/GetToken"
+            }
+        },
+        "SchoolsResponse":{
+            "description": "The School's Response",
+            "schema": {
+                "$ref": "#/definitions/Schools"
+            }
+        },
+        "ClassRoomsResponse":{
+            "description": "The Classroom's Response",
+            "schema": {
+                "$ref": "#/definitions/Classrooms"
+            }
+        },
+        "StudentsResponse":{
+            "description": "The Student's Response",
+            "schema": {
+                "$ref": "#/definitions/Students"
+            }
+        },
+        "Unauthorized": {
+            "description": "The requester is unauthorized.",
+            "schema": {
+                "$ref": "#/definitions/Error"
+            }
+        },
+        "NotFound": {
+            "description": "Resource not found.",
+            "schema": {
+                "$ref": "#/definitions/Error"
+            }
+        },
+        "InternalError": {
+            "description": "Internal Server Error.",
+            "schema": {
+                "$ref": "#/definitions/Error"
+            }
+        }
+    }
+}

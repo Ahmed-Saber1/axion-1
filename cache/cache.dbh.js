@@ -143,13 +143,10 @@ module.exports = ({ prefix, url}) => {
                 let result = await redisClient.hset(key, fieldKey, data);
                 return result;
             },
-    
             getField: async ({ key, fieldKey }) => {
                 let result = await redisClient.hget(key, fieldKey);
                 return result;
-            },
-            
-            
+            },           
             getFields: async ({ key, fields }) => {
                 let result = await redisClient.hmget(key, ...fields);
                 /** resuts are retruned as an array of values with the same order of the fields */

@@ -1,20 +1,22 @@
 
 
 module.exports = {
-    createUser: [
+    createSchool: [
         {
-            model: 'userName',
-            required: true
-        },
-        {
-            model: 'role',
-            required: true
-        },
-        {
-            model: 'password',
+            model: 'name',
             required: true
         }
     ],
+    updateSchool: [
+        {
+            model: 'id',
+            required: true
+        },
+        {
+            model: 'name',
+            required: true
+        }
+    ]
 }
 
 

@@ -151,9 +151,17 @@ module.exports = class ApiHandler {
             /** executed after all middleware finished */
 
             let body = req.body || {};
+            let params = req.params || {};
+            let headers = req.headers || {};
+            let query = req.query || {};
+            let user = results.__longToken ? results.__longToken.user : {};
             let result = await this._exec({targetModule: this.managers[moduleName], fnName, data: {
                 ...body, 
                 ...results,
+                params,
+                headers,
+                query,
+                user,
                 res,
             }});
             if(!result)result={}
@@ -171,6 +179,7 @@ module.exports = class ApiHandler {
                 }
             }
         }});
+
         hotBolt.run();    
         
     }

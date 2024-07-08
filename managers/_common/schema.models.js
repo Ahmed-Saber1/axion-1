@@ -6,11 +6,11 @@ module.exports = {
         type: "string",
         length: { min: 1, max: 50 },
     },
-    username: {
-        path: 'username',
+    userName: {
+        path: 'userName',
         type: 'string',
         length: {min: 3, max: 20},
-        custom: 'username',
+        custom: 'userName',
     },
     password: {
         path: 'password',
@@ -21,6 +21,26 @@ module.exports = {
         path: 'email',
         type: 'string',
         length: {min:3, max: 100},
+    },
+    role: {
+        path: 'role',
+        type: 'string',
+        enum: ["superAdmin","admin"]
+    },
+    schoolId: {
+        path: 'schoolId',
+        type: 'string',
+        length: {min:1, max: 50},
+    },
+    classroomId: {
+        path: 'classroomId',
+        type: 'string',
+        length: {min:1, max: 50},
+    },
+    name: {
+        path: 'name',
+        type: 'string',
+        length: {min: 3, max: 300}
     },
     title: {
         path: 'title',
@@ -77,11 +97,13 @@ module.exports = {
         type: 'String',
         length: {min: 3, max:10000},
     },
-    phone: {
+    phoneNumber: {
+        path: "phoneNumber",
         type: 'String',
         length: 13,
     },
     email: {
+        path: "email",
         type: 'String',
         regex: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
