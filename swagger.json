@@ -6,7 +6,7 @@
         "description": "A small system to manage your basic school needs"
     },
     "schemes": ["https"],
-    "host": "schoolmanagement-challenge.onrender.com",
+    "host": "axion-1.onrender.com",
     "paths": {
         "/api/user/createUser": {
             "post": {
