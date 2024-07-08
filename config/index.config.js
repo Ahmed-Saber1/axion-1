@@ -8,7 +8,8 @@ const USER_PORT                        = process.env.USER_PORT || 5111;
 const ADMIN_PORT                       = process.env.ADMIN_PORT || 5222;
 const ADMIN_URL                        = process.env.ADMIN_URL || `http://localhost:${ADMIN_PORT}`;
 const ENV                              = process.env.ENV || "development";
-const REDIS_URI                        = process.env.REDIS_URI || "redis://127.0.0.1:6379";
+const REDIS_URI                        = process.env.REDIS_URI || "redis://default:FWmyGrCBMfAWoVyllYuZzEyauFibYfNW@redis-10500.c300.eu-central-1-1.ec2.redns.redis-cloud.com:10500";
+//const REDIS_URI                        = process.env.REDIS_URI || "redis://127.0.0.1:6379";
 
 const CORTEX_REDIS                     = process.env.CORTEX_REDIS || REDIS_URI;
 const CORTEX_PREFIX                    = process.env.CORTEX_PREFIX || 'none';
